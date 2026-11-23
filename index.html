@@ -1,4 +1,106 @@
-``html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#123047">
+<title>KENBO Kenya | Isiolo Market Survey</title>
+<style>
+:root{--navy:#123047;--blue:#176b87;--pale:#edf5f7;--ink:#18242d;--muted:#5d6b74;--line:#d8e1e5;--white:#fff;--green:#18794e}
+*{box-sizing:border-box}
+body{margin:0;background:#f3f6f7;color:var(--ink);font:16px/1.45 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+header{background:var(--navy);color:white;padding:22px 16px 20px}
+.wrap{max-width:850px;margin:auto}
+.eyebrow{font-size:12px;letter-spacing:.12em;font-weight:700;color:#b8dce6;text-transform:uppercase}
+h1{font-size:clamp(23px,5vw,32px);line-height:1.15;margin:7px 0}
+header p{margin:8px 0 0;color:#e1edf1;font-size:14px}
+main{max-width:850px;margin:0 auto;padding:16px 12px 90px}
+.card{background:white;border:1px solid var(--line);border-radius:14px;padding:16px;margin:0 0 14px;box-shadow:0 2px 8px #1833440a}
+h2{font-size:18px;margin:0 0 12px;color:var(--navy)}
+h3{font-size:16px;margin:0;color:var(--navy)}
+.note{font-size:13px;color:var(--muted);margin:0 0 12px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+label{display:block;font-size:13px;font-weight:650;color:#33444e;margin:0 0 6px}
+input,select,textarea{width:100%;border:1px solid #cbd7dc;border-radius:9px;padding:12px;font:inherit;font-size:16px;background:white;color:var(--ink);min-height:46px}
+textarea{min-height:86px;resize:vertical}
+.field{margin:0 0 13px}
+.section{border:1px solid var(--line);border-radius:12px;margin:10px 0;overflow:hidden;background:#fff}
+.section summary{list-style:none;cursor:pointer;padding:15px 14px;background:var(--pale);display:flex;align-items:center;justify-content:space-between;gap:10px;font-weight:750;color:var(--navy)}
+.section summary::-webkit-details-marker{display:none}
+.section summary:after{content:"＋";font-size:20px;color:var(--blue)}
+.section[open] summary:after{content:"−"}
+.section-body{padding:14px}
+.q{padding:12px 0;border-bottom:1px solid #edf0f2}
+.q:last-child{border-bottom:0}
+.q label{font-size:14px;color:#263943}
+.q small{display:block;color:var(--muted);font-weight:400;margin-top:3px}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:12px}
+button{border:0;border-radius:10px;padding:13px 12px;font:700 14px system-ui;cursor:pointer;min-height:48px}
+button:disabled{opacity:.6;cursor:not-allowed}
+.primary{background:var(--navy);color:white}
+.submit-gs{background:var(--green);color:white;grid-column:1/-1;font-size:15px}
+.secondary{background:#e6f0f3;color:var(--navy);border:1px solid #cbdde3}
+.danger{background:#fff0ef;color:#96352d;border:1px solid #f1d0cd}
+.status{font-size:13px;color:var(--green);min-height:20px;margin-top:8px;font-weight:600}
+.progress{height:7px;background:#e4ecef;border-radius:20px;overflow:hidden;margin:10px 0}
+.progress span{display:block;height:100%;width:0;background:var(--blue)}
+footer{max-width:850px;margin:auto;padding:0 16px 28px;color:var(--muted);font-size:12px}
+.sticky{position:fixed;bottom:0;left:0;right:0;background:#ffffffed;border-top:1px solid var(--line);padding:9px 12px calc(9px + env(safe-area-inset-bottom));backdrop-filter:blur(8px)}
+.sticky-inner{max-width:850px;margin:auto;display:grid;grid-template-columns:1.3fr 1fr;gap:9px}
+@media(max-width:560px){.grid{grid-template-columns:1fr}.card{padding:14px}.actions{grid-template-columns:1fr 1fr}main{padding:12px 10px 100px}}
+@media print{body{background:white}.sticky,.actions,.progress{display:none!important}.card,.section{break-inside:avoid;box-shadow:none}input,textarea,select{border:0;border-bottom:1px solid #999;border-radius:0}}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+<div class="eyebrow">KENBO Kenya | Field Research Tool</div>
+<h1>Isiolo Town Market Entry & Commercial Opportunity Survey</h1>
+<p>Structured field questionnaire for validating demand, channel opportunities, competitor activity and commercial viability for electric motorcycles, scooters and tricycles.</p>
+</div></header>
+<main>
+<section class="card">
+<h2>1. Survey & Respondent Details</h2>
+<p class="note">Complete these details for every interview. Avoid collecting unnecessary personal or confidential information.</p>
+<div class="grid">
+<div class="field"><label for="date">Date of interview</label><input id="date" type="date"></div>
+<div class="field"><label for="interviewer">KENBO interviewer</label><input id="interviewer" placeholder="Name of field interviewer"></div>
+<div class="field"><label for="respondentType">Respondent category</label><select id="respondentType"><option value="">Select category</option><option>Boda boda rider / SACCO</option><option>Dealer / distributor</option><option>Fleet / corporate / delivery business</option><option>SACCO / MFI / financier</option><option>Competitor / market audit</option></select></div>
+<div class="field"><label for="respondentName">Business / SACCO / respondent name</label><input id="respondentName" placeholder="Name"></div>
+<div class="field"><label for="location">Location / estate / trading centre</label><input id="location" placeholder="e.g. Isiolo CBD"></div>
+<div class="field"><label for="contact">Contact (optional)</label><input id="contact" type="tel" placeholder="Phone / email, if consented"></div>
+</div>
+<div class="field"><label for="consent">Consent to use responses for market research</label><select id="consent"><option value="">Select</option><option>Yes — respondent agrees</option><option>No — do not record identifiable details</option></select></div>
+</section>
+
+<section class="card">
+<h2>2. Field Survey Questionnaire</h2>
+<p class="note">Open the relevant respondent category and record the respondent’s answers. Use “Not known” rather than guessing. Record units and time periods wherever figures are provided.</p>
+<div class="progress"><span id="progressBar"></span></div>
+<div class="note" id="progressText">0 of 5 survey sections completed</div>
+
+<details class="section" open data-section="riders">
+<summary>A. Boda boda riders & SACCOs</summary><div class="section-body">
+<div class="q"><label>1. How many active riders are in this SACCO/group, or operating in this stage/area?</label><textarea data-q="A1" placeholder="Number; source or estimate; active membership definition"></textarea></div>
+<div class="q"><label>2. What motorcycle brands and models are most commonly used?</label><textarea data-q="A2" placeholder="Brand, model, engine size; approximate numbers if known"></textarea></div>
+<div class="q"><label>3. What is the typical daily distance travelled and operating pattern?</label><textarea data-q="A3" placeholder="Kilometres/day; hours/day; routes; passenger or goods trips"></textarea></div>
+<div class="q"><label>4. What are typical daily fuel costs and other running costs?</label><textarea data-q="A4" placeholder="KSh/day for fuel, maintenance, repairs and other costs"></textarea></div>
+<div class="q"><label>5. What are typical daily or weekly gross earnings and take-home income?</label><textarea data-q="A5" placeholder="KSh; specify daily/weekly and whether gross or net"></textarea></div>
+<div class="q"><label>6. How do riders currently acquire motorcycles?</label><textarea data-q="A6" placeholder="Cash, hire purchase, asset finance, lease, employer/SACCO support; providers"></textarea></div>
+<div class="q"><label>7. What deposit, instalment and repayment period could riders realistically afford?</label><textarea data-q="A7" placeholder="Deposit KSh; daily/weekly/monthly instalment; preferred tenor"></textarea></div>
+<div class="q"><label>8. Would riders consider an electric motorcycle, scooter or tricycle? Why or why not?</label><textarea data-q="A8" placeholder="Interest level, preferred vehicle type, reasons"></textarea></div>
+<div class="q"><label>9. What are the main barriers to EV adoption?</label><textarea data-q="A9" placeholder="Purchase price, range, charging, battery, service, spare parts, resale, finance, downtime"></textarea></div>
+<div class="q"><label>10. What would make riders or the SACCO adopt or recommend KENBO?</label><textarea data-q="A10" placeholder="Economics, trial, warranty, service, finance, charging access, group offer"></textarea></div>
+</div></details>
+
+<details class="section" data-section="dealers">
+<summary>B. Dealers & distributors</summary><div class="section-body">
+<div class="q"><label>1. Which motorcycle, scooter and tricycle brands/models do you currently stock or sell?</label><textarea data-q="B1" placeholder="Brands, models, engine/battery specifications"></textarea></div>
+<div class="q"><label>2. What are the approximate monthly unit sales by product/brand?</label><textarea data-q="B2" placeholder="Units/month; distinguish actual records from estimates"></textarea></div>
+<div class="q"><label>3. What are current retail and wholesale selling prices?</label><textarea data-q="B3" placeholder="KSh by model; cash vs financed price"></textarea></div>
+<div class="q"><label>4. What gross margins, commissions or dealer discounts are available?</label><textarea data-q="B4" placeholder="Percentage or KSh/unit; clarify whether gross margin or commission"></textarea></div>
+<div class="q"><label>5. Which financing options are available to customers?</label><textarea data-q="B5" placeholder="Financier, deposit, instalment, tenor, approval requirements"></textarea></div>
+<div class="q"><label>6. What after-sales support is available?</label><textarea data-q="B6" placeholder="Warranty, workshop, technicians, spare parts, turnaround time"></textarea></div>
+<div class="q"><label>7. Would you consider becoming a KENBO dealer/distributor? Under what conditions?</label><textarea data-q="B7" placeholder="Territory, exclusivity, margin, credit, stock, training, marketing support"></textarea></div>
 <section class="card">
 <h2>3. Interviewer Assessment & Validation</h2>
 <div class="field"><label for="demand">Most attractive customer segments / use cases</label><textarea id="demand" placeholder="Rank the segments and state why"></textarea></div>
