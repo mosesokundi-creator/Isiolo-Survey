@@ -1,1 +1,115 @@
-https://github.com/mosesokundi-creator/Isiolo-Survey.git
+``html
+<section class="card">
+<h2>3. Interviewer Assessment & Validation</h2>
+<div class="field"><label for="demand">Most attractive customer segments / use cases</label><textarea id="demand" placeholder="Rank the segments and state why"></textarea></div>
+<div class="field"><label for="products">Priority KENBO products to test</label><textarea id="products" placeholder="Motorcycle, scooter, tricycle; specify use case and rationale"></textarea></div>
+<div class="field"><label for="partners">Potential channel, SACCO, fleet and finance partners</label><textarea id="partners" placeholder="Organisation, contact/role if consented, opportunity, next action"></textarea></div>
+<div class="field"><label for="economics">Commercial economics and affordability observations</label><textarea id="economics" placeholder="Customer savings, price tolerance, financing fit, dealer margin, service costs"></textarea></div>
+<div class="field"><label for="risks">Key barriers, risks and evidence gaps</label><textarea id="risks" placeholder="Demand, infrastructure, range, service, parts, financing, competition"></textarea></div>
+<div class="field"><label for="recommendation">Preliminary recommendation</label><select id="recommendation"><option value="">Select</option><option>Proceed to controlled pilot</option><option>Proceed only after conditions are met</option><option>Conduct more validation</option><option>Defer / do not enter at this stage</option></select></div>
+<div class="field"><label for="nextSteps">Next steps, owner and target date</label><textarea id="nextSteps" placeholder="Specific action | responsible person | due date"></textarea></div>
+</section>
+
+<section class="card">
+<h2>4. Field Evidence & Quality Checks</h2>
+<p class="note">Record the source and quality of material findings. Separate verified facts from estimates and opinions.</p>
+<div class="field"><label for="evidence">Evidence collected</label><textarea id="evidence" placeholder="Photos (with permission), price lists, brochures, sales records, site observations, interview notes"></textarea></div>
+<div class="field"><label for="source">Source / verification notes</label><textarea id="source" placeholder="Who supplied the information? Was it observed, documented or estimated?"></textarea></div>
+<div class="field"><label for="confidence">Overall confidence in this interview</label><select id="confidence"><option value="">Select</option><option>High — supported by records/direct observation</option><option>Medium — credible respondent, some estimates</option><option>Low — unverified or anecdotal</option></select></div>
+</section>
+
+<div class="card">
+<h2>5. Submit, Save & Export</h2>
+<p class="note">Tap <strong>Submit to Google Sheet</strong> when online to send this interview directly to the central KENBO database. Entries also autosave on this device.</p>
+<div class="actions">
+<button class="submit-gs" type="button" data-gs-btn onclick="submitToGoogleSheet()">Submit to Google Sheet</button>
+<button class="primary" type="button" onclick="exportJSON()">Export interview (.json)</button>
+<button class="secondary" type="button" onclick="exportCSV()">Export answers (.csv)</button>
+<button class="secondary" type="button" onclick="window.print()">Print / Save PDF</button>
+<button class="danger" type="button" onclick="clearForm()">Clear this interview</button>
+</div>
+<div class="status" id="status" aria-live="polite">Autosave is active on this device.</div>
+</div>
+</main>
+<div class="sticky"><div class="sticky-inner">
+<button class="primary" style="background:var(--green)" type="button" data-gs-btn onclick="submitToGoogleSheet()">Submit to Sheet</button>
+<button class="secondary" type="button" onclick="exportCSV()">Export CSV</button>
+</div></div>
+<footer>KENBO Kenya | Isiolo Market Entry & Commercial Opportunity Assessment<br>Research discipline: record actual evidence; label estimates and assumptions; never present unverified figures as fact.</footer>
+<script>
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxyCaTHjQoGXjbMrap6JMIewWRUHuJ2-Zp2vtjYq-w8pYZORx6vfa012YGGoxCE9iGx/exec';
+const fields = [...document.querySelectorAll('input,select,textarea')];
+const storageKey = 'kenbo_isiolo_market_survey_v1';
+
+function getData(){
+ const data={};
+ fields.forEach(el=>{if(el.id)data[el.id]=el.value; if(el.dataset.q)data[el.dataset.q]=el.value;});
+ return {form:'KENBO Kenya — Isiolo Market Survey',version:1,exportedAt:new Date().toISOString(),responses:data};
+}
+function saveLocal(){
+ try{localStorage.setItem(storageKey,JSON.stringify(getData()));document.getElementById('status').textContent='Saved on this device • '+new Date().toLocaleTimeString();}
+ catch(e){document.getElementById('status').textContent='Browser storage unavailable. Please export your interview.';}
+ updateProgress();
+}
+function loadLocal(){
+ try{const saved=JSON.parse(localStorage.getItem(storageKey)||'null');if(saved&&saved.responses){fields.forEach(el=>{const k=el.id||el.dataset.q;if(k in saved.responses)el.value=saved.responses[k];});}}
+ catch(e){}
+ updateProgress();
+}
+function updateProgress(){
+ const sections=[...document.querySelectorAll('[data-section]')];
+ const done=sections.filter(s=>[...s.querySelectorAll('textarea')].some(t=>t.value.trim())).length;
+ document.getElementById('progressBar').style.width=(done/sections.length*100)+'%';
+ document.getElementById('progressText').textContent=done+' of '+sections.length+' survey sections have responses';
+}
+fields.forEach(el=>el.addEventListener('input',saveLocal));
+fields.forEach(el=>el.addEventListener('change',saveLocal));
+
+async function submitToGoogleSheet(){
+ const btns=[...document.querySelectorAll('[data-gs-btn]')];
+ btns.forEach(b=>{b.disabled=true;b.textContent='Submitting...';});
+ document.getElementById('status').textContent='Sending responses to Google Sheet...';
+
+ const payload=new URLSearchParams(getData().responses);
+ try{
+  const res=await fetch(GOOGLE_SCRIPT_URL,{method:'POST',body:payload});
+  if(!res.ok) throw new Error('Network error');
+  document.getElementById('status').textContent='Submitted to Google Sheet • '+new Date().toLocaleTimeString();
+  if(confirm('Interview saved to Google Sheet! Would you like to clear the form for the next respondent?')){
+   fields.forEach(el=>el.value='');
+   localStorage.removeItem(storageKey);
+   updateProgress();
+   window.scrollTo({top:0,behavior:'smooth'});
+  }
+ }catch(err){
+  document.getElementById('status').textContent='Upload failed — saved locally. Check internet and try again.';
+  alert('Could not reach Google Sheet. Your answers are still safely saved on this device—please check your internet connection or export CSV as backup.');
+ }finally{
+  btns.forEach((b,i)=>{b.disabled=false;b.textContent=i===0?'Submit to Google Sheet':'Submit to Sheet';});
+ }
+}
+
+function download(name,content,type){
+ const blob=new Blob([content],{type});const url=URL.createObjectURL(blob);
+ const a=document.createElement('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
+ document.getElementById('status').textContent='Export prepared: '+name;
+}
+function safeName(){const d=document.getElementById('date').value||new Date().toISOString().slice(0,10);return 'KENBO_Isiolo_Survey_'+d;}
+function exportJSON(){saveLocal();download(safeName()+'.json',JSON.stringify(getData(),null,2),'application/json');}
+function csvCell(v){return '"'+String(v??'').replace(/"/g,'""')+'"';}
+function exportCSV(){
+ saveLocal();const data=getData().responses;
+ const rows=[['Field','Response']];
+ Object.entries(data).forEach(([k,v])=>rows.push([k,v]));
+ const csv='\uFEFF'+rows.map(r=>r.map(csvCell).join(',')).join('\r\n');
+ download(safeName()+'.csv',csv,'text/csv;charset=utf-8');
+}
+function clearForm(){
+ if(!confirm('Clear all answers for this interview on this device? Export or submit first if you need to keep them.'))return;
+ fields.forEach(el=>el.value='');localStorage.removeItem(storageKey);updateProgress();
+ document.getElementById('status').textContent='Interview cleared.';
+}
+loadLocal();
+</script>
+</body>
+</html>
